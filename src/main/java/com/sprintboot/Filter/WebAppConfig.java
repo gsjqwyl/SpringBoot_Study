@@ -20,8 +20,8 @@ public class WebAppConfig implements WebMvcConfigurer {
         /**
          * 可以添加多个拦截器
          */
-        registry.addInterceptor(new HttpInterceptor()).addPathPatterns("/**");
-        registry.addInterceptor(new HttpInterceptor1());
+//        registry.addInterceptor(new HttpInterceptor()).addPathPatterns("/**");
+//        registry.addInterceptor(new HttpInterceptor1());
     }
 
 
@@ -31,7 +31,7 @@ public class WebAppConfig implements WebMvcConfigurer {
      */
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        System.out.println("====  跨域处理 =====");
+        //System.out.println("====  跨域处理 =====");
         registry.addMapping("/**")
                 .allowedMethods("POST");
 

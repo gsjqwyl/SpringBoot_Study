@@ -1,19 +1,25 @@
 package com.sprintboot.Controller;
 
-import com.sprintboot.Dao.UserDao;
+import com.sprintboot.Mapper.UserMapper1;
 import com.sprintboot.Model.User;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import java.util.List;
-import java.util.UUID;
 
 
 /**
  * @RestController 相当于@ResponseBody + @Controller
  */
 @RestController
+@EnableCaching
 public class HelloWorldController {
 
     /**
@@ -35,15 +41,60 @@ public class HelloWorldController {
         return user;
     }
 
-    @Autowired
-    private UserDao userDao;
+//    @Autowired
+//    private UserDao userDao;
+//
+//    @RequestMapping("/find")
+//    public List<User> find() {
+//        List<User> list = (List<User>) userDao.findAll();
+//        for (User user : list) {
+//            System.out.println(user);
+//        }
+//        return list;
+//    }
 
-    @RequestMapping("/find")
-    public List<User> find() {
-        List<User> list = (List<User>) userDao.findAll();
-        for (User user : list) {
-            System.out.println(user);
+
+    @Resource
+    private UserMapper1 userMapper1;
+
+    Logger logger = LoggerFactory.getLogger(getClass());
+
+    /**
+     * sync:在多线程并发环境下，sync = true 表示将缓存锁住，
+     * 每次只能处理一个请求。其他线程堵塞，直到将结果更新至缓存中
+     * @return
+     */
+    @RequestMapping("find_one")
+    @Cacheable(key = "'user' + #user.id")
+    public User findOne(User user) {
+        logger.info("从数据库中查询....");
+        return userMapper1.findById("1");
+    }
+
+    /**
+     * @CachePut 也声明一个方法支持缓存功能。但是它在执行前不会去检查是否存在缓存，
+     * 而是每次将执行结果以键值对的形式存入指定的缓存中。
+     * @param user
+     * @return
+     */
+    @RequestMapping("update")
+    @CachePut(key = "'user' + #user.id")
+    public String update(User user) {
+        int count = userMapper1.updateUser(user);
+        logger.info("数据更新完毕，更新了：" + count + "条");
+        return "success!!!";
+    }
+
+
+    @RequestMapping("delete/{id}")
+    public String delete(@PathVariable("id") Integer id) {
+        int count = userMapper1.delete(id);
+        if (count > 0) {
+            logger.info("删除成功." + count + "条");
+            return "success";
+        } else {
+            logger.info("无该用户..");
+            return "None";
         }
-        return list;
     }
 }
