@@ -18,10 +18,7 @@ public class SprintBootStudyApplication {
 	}
 
 
-//	public CacheManager cacheManager() {
-//		SimpleCacheManager manager = new SimpleCacheManager();
-//		#manager.setCaches(Arrays.asList("a", "b"));
-//	}
+
 }
 
 

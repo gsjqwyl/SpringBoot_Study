@@ -65,10 +65,10 @@ public class HelloWorldController {
      * @return
      */
     @RequestMapping("find_one")
-    @Cacheable(key = "'user' + #user.id")
+    //@Cacheable(key = "'user' + #user.id")
     public User findOne(User user) {
         logger.info("从数据库中查询....");
-        return userMapper1.findById("1");
+        return userMapper1.findById(user.getId());
     }
 
     /**
