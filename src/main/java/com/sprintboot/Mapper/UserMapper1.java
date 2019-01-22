@@ -33,7 +33,7 @@ public interface UserMapper1 extends Mapper{
     List<User> getAll();
 
     //更新
-    @Update("update user set name = #{userName} where id = #{id}")
+    @Update("update user set userName = #{userName} where id = #{id}")
     int updateUser(User user);
 
     @Results(value = {

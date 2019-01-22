@@ -6,11 +6,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.support.SimpleCacheManager;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.Arrays;
 
+/**
+ *  @EnableSwagger2: 启用swagger注解
+ */
 @SpringBootApplication
-// @MapperScan(basePackages = {"com.sprintboot.IDao"})
+@EnableSwagger2
 public class SprintBootStudyApplication {
 
 	public static void main(String[] args) {

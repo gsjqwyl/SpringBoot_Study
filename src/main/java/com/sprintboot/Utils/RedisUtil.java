@@ -14,7 +14,8 @@ import java.util.concurrent.TimeUnit;
 public class RedisUtil {
 
     /**
-     * 如果k-v 都是String类型的可以直接使用StingRedisTemplate
+     * 如果k-v 都是String类型的可以直接使用StingRedisTemplate，
+     * StringRedisTemplate 集成自RedisTemplate
      */
     private StringRedisTemplate template;
 

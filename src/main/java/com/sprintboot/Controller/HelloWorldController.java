@@ -2,17 +2,20 @@ package com.sprintboot.Controller;
 
 import com.sprintboot.Mapper.UserMapper1;
 import com.sprintboot.Model.User;
+import com.sprintboot.aspect.AnnoAspect;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 
 /**
@@ -26,9 +29,20 @@ public class HelloWorldController {
      * RequestMapping 将Http请求映射到方法上
      * @return
      */
-    @RequestMapping("/")
-    public String HelloWorld() {
-        return "Hello World";
+    @RequestMapping("")
+    public String HelloWorld(HttpServletRequest request, HttpServletResponse response)
+    {
+        String name = (String) request.getAttribute("name");
+        Integer age = (Integer) request.getAttribute("age");
+        //System.out.println(age/0); //报异常
+        return "My Name is " + name + "， I'm " + age + " years old.";
+    }
+
+    @AnnoAspect(module = "注解测试..")
+    @RequestMapping("/aspect")
+    public String AspectTest()
+    {
+        return "Hello";
     }
 
     @RequestMapping("/json")
